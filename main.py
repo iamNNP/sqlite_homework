@@ -248,6 +248,11 @@ def get_students_avg_mark_by_department(select_by_value):
 
 # Закрытие соединения
 
+import re
+def fits_date(date_str):
+    pattern = r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$'
+    return bool(re.match(pattern, date_str))
+
 print("Выберите команду: ")
 print("""1. Добавление нового студента.
 2. Добавление нового преподавателя.
@@ -283,6 +288,9 @@ while user_input != 20:
         department = input()
         print("Введите дату рождения студента: ")
         date_of_birth = input()
+        while not(fits_date(date_of_birth)):
+            print("Дата введена неправильно, введите данные снова")
+            date_of_birth = input()
         try:
             add_student(name, surname, department, date_of_birth)
         except Exception as e:
@@ -306,7 +314,7 @@ while user_input != 20:
         print("Введите описание курса: ")
         description = input()
         print("Введите id преподавателя курса: ")
-        teacher_id = input()
+        teacher_id = int(input())
         try:
             add_course(title, description, teacher_id)
         except Exception as e:
@@ -315,10 +323,13 @@ while user_input != 20:
     if user_input == 4:
         print("Введите дату экзамена: ")
         date = input()
+        while not(fits_date(date)):
+            print("Дата введена неправильно, введите данные снова")
+            date = input()
         print("Введите id курса экзамена: ")
-        course_id = input()
+        course_id = int(input())
         print("Введите максимальный бал экзамена: ")
-        max_score = input()
+        max_score = int(input())
         try:
             add_exam(date, course_id, max_score)
         except Exception as e:
@@ -326,11 +337,11 @@ while user_input != 20:
             print("Ошибка при вводе команд, введите данные снова")
     if user_input == 5:
         print("Введите id студента оценки: ")
-        student_id = input()
+        student_id = int(input())
         print("Введите id экзамена оценки: ")
-        exam_id = input()
+        exam_id = int(input())
         print("Введите оценку: ")
-        score = input()
+        score = int(input())
         try:
             add_exam(student_id, exam_id, score)
         except Exception as e:
